@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: ad-approval-pilot-ai
+    runtime: python
+    plan: free
+    # Gunicorn handles the process management, UvicornWorker handles the async FastAPI code
+    startCommand: "gunicorn main:app -w 1 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: adpilot-db
+          property: connectionString
+      - key: BOT_TOKEN
+        sync: false  # You will manually input this in the Render Dashboard for security
+      - key: RENDER_EXTERNAL_URL
+        sync: false  # This will be your service's URL (e.g., https://ad-approval.onrender.com)
+      - key: ADMIN_ID
+        value: "6941833127"
+      - key: ADMIN_USERNAME
+        value: "@BlockSavvyMx"
+      - key: PYTHONPATH
+        value: "."
+
+databases:
+  - name: adpilot-db
+    plan: free
+    databaseName: adpilot_db
+    user: adpilot_admin
