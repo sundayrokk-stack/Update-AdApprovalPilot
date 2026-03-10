@@ -1,4 +1,0 @@
-from database import Base
-from .user import User, ScanHistory
-
-__all__ = ["Base", "User", "ScanHistory"]
